@@ -1,0 +1,26 @@
+{% extends "consoles/t_consolebase.html" %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{{ theform.media }}
+
+<div class="container card my-2 alert alert-secondary">
+{% if un == request.session.username %}
+<h2 class='text'>Edit Solution Details :</h2>
+<form enctype="multipart/form-data" method="POST"> 
+    {% csrf_token %}
+    {% bootstrap_form theform %}
+    <div class="mx-auto" style="width: 200px;">
+        <input class="btn btn-outline-primary" type="submit" value="Edit Bug">
+    </div>
+</form>
+{% else %}
+    <div class="text-center mx-auto p-5"><h3>You didn't added these details!<br> Contact Admin if this is wrong.</h3></div>
+{% endif %}
+
+<footer>.</footer>
+</div>
+{% endblock %}

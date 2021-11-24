@@ -1,0 +1,26 @@
+{% extends "consoles/t_consolebase.html" %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{{ theform.media }}
+
+<div class="container card my-4 alert alert-secondary">
+    <h2 class='text'>Enter Reopening Reason:</h2>
+    {% if un == request.session.username %}
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form theform %}
+        <input class="btn btn-outline-primary" type="submit" value="Reopen Bug">
+    </form>
+    {% else %}
+    <div class="text-center mx-auto p-5">
+        <h3>You didn't added this bug!<br> Contact Admin if this is wrong.</h3>
+    </div>
+    {% endif %}
+
+    <footer>.</footer>
+</div>
+{% endblock %}

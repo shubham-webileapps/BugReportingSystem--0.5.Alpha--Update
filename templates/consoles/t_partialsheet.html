@@ -1,0 +1,175 @@
+{% extends "consoles/t_consolebase.html" %}
+{% block body_block %}
+<div class="container" style="max-width: 98%;font-family: 'Oswald', sans-serif; ">
+        <div class="row m-3 ">
+                <div class="col-sm rounded card" style="background-color: #ff5959;">
+                        <h4 class="m-1 text text-center">Highest Priority </h4>
+                </div>
+                <div class="col-sm rounded card" style="background-color: #ffbb80;">
+                        <h4 class="m-1 text text-center">High Priority </h4>
+                </div>
+                <div class="col-sm rounded card" style="background-color: #fffd80;">
+                        <h4 class="m-1 text text-center">Medium Priority </h4>
+                </div>
+                <div class="col-sm rounded card" style="background-color: #9cff80;">
+                        <h4 class="m-1 text text-center">Low Priority </h4>
+                </div>
+                <div class="col-sm rounded card" style="background-color: #80eeff;">
+                        <h4 class="m-1 text text-center">Lowest Priority </h4>
+                </div>
+        </div>
+        
+                        <a class="btn btn-info vvds p-2 m-2" style="width: 140px;border-radius:50px;background:blue" onclick=hello()> all</a>
+                        <a class="btn btn-info vvds1 p-2 m-2" style="width: 140px;border-radius:50px;background:red" onclick=Pending()> Pending</a>
+                        <a class="btn btn-info vvds2 p-2 m-2" style="width: 140px;border-radius:50px;background:orange" onclick=Skip()> Skip</a>
+                        <a class="btn btn-info vvds3 p-2 m-2" style="width: 140px;border-radius:50px;background:seagreen" onclick=Closed()> Closed</a>
+                        <a class="btn btn-info vvds4 p-2 m-2" style="width: 140px;border-radius:50px;background:green" onclick=Solved()> Solved</a>
+        <div class="row card">
+                <table class='table table-bordered table-sm table-responsive rounded scale-in-ver-top'>
+                        
+                        
+                        
+                             <thead>   <tr>
+                                        <th scope="col" class="text-wrap">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Resolution_Status' %}">+</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Defect_Id' %}">Defect
+                                                                Id</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Priority' %}">Priority</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Status' %}">Status</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Defect_desc' %}">Discription</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Tester_name' %}">Tester</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Developer_name' %}">Developer</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Date_of_finding' %}">Finding
+                                                                Date</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Date_of_resolving' %}">Resolving
+                                                                Date</a></h6>
+                                        </th>
+                                        
+                                        {% if request.session.usertype == "admin" %}
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="{% url 'consoles:sheet_detail_orderby' pk=proj_name ob='Date_of_resolving' %}">Show Logs</a></h6>
+                                        </th>  
+                                        {% endif %}
+                                                
+                                        </tr>
+                        </thead>
+                        <tbody>
+                                {% for sheetRow in sheetRows %}
+
+                                <tr id='my'  {% if sheetRow.Resolution_Status == "Pending" %}class="table-row Pending"
+                                                {% elif sheetRow.Resolution_Status == "Skip"%}class="table-row Skip"
+                                                {% elif sheetRow.Resolution_Status == "Closed"%}class="table-row Closed"
+                                                {% else %}class="table-row Solved"
+                                                {% endif %}
+                                        data-href="{% url 'consoles:row_detail' bugModelPK=sheetRow.pk projname=sheetRow.Project_name%}"
+                                        {% if sheetRow.Priority == 'Highest' %}
+                                        style="background-color:#ff5959;cursor: pointer;"
+                                        {% elif sheetRow.Priority == 'High' %}
+                                        style="background-color:#ffbb80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Medium' %}
+                                        style="background-color:#fffd80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Low' %}
+                                        style="background-color:#9cff80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Lowest' %}
+                                        style="background-color:#80eeff;cursor: pointer;" %} {% endif %}>
+                                        <td {% if sheetRow.Resolution_Status == "Pending" %}
+                                                style="color: white; background-color: red;"{% elif sheetRow.Resolution_Status == "Skip"%}
+                                                style="color: white; background-color: orange;"{% elif sheetRow.Resolution_Status == "Closed"%}
+                                                style="color: white; background-color: seagreen;" {% else %}
+                                                style="color: white; background-color: green;" {% endif %}>
+                                                {{sheetRow.Resolution_Status}}</td>
+                                        <th scope="row">{{sheetRow.Defect_Id}}</th>
+                                        <td>{{sheetRow.Priority}}</td>
+                                        <td>{{sheetRow.Status}}, {{sheetRow.TimesReopened}}</td>
+                                        <td class="text-wrap">{{sheetRow.Defect_desc}}</td>
+                                        <td>{{sheetRow.Tester_name}}</td>
+                                        <td>{{sheetRow.Developer_name}}</td>
+                                        <td>{{sheetRow.Date_of_finding}}</td>
+                                        <td>{{sheetRow.Date_of_resolving}}</td>
+                                        {% if request.session.usertype == "admin" %}
+                                        <td><a href="{% url 'consoles:logs_detail' did=sheetRow.Defect_Id %}">Show Logs</a></td>
+                                        {% endif %}
+                                </tr>
+
+                                {% endfor %}
+                        </tbody>
+                </table>
+
+        </div>
+</div>
+<script>
+
+function Solved(){
+        $("tr").filter('.Pending').hide()
+        $("tr").filter('.Skip').hide()
+        $("tr").filter('.Closed').hide()
+        $("tr").filter('.Solved').show()
+};
+function Closed(){
+        $("tr").filter('.Pending').hide()
+        $("tr").filter('.Skip').hide()
+        $("tr").filter('.Solved').hide()
+        $("tr").filter('.Closed').show()
+};
+function Skip(){
+        $("tr").filter('.Pending').hide()
+        $("tr").filter('.Closed').hide()
+        $("tr").filter('.Solved').hide()
+        $("tr").filter('.Skip').show()
+};
+function Pending(){
+        $("tr").filter('.Skip').hide()
+        $("tr").filter('.Closed').hide()
+        $("tr").filter('.Solved').hide()
+        $("tr").filter('.Pending').show()
+};
+function hello(){
+        $("tr").filter('.Solved').show()
+        $("tr").filter('.Closed').show()
+        $("tr").filter('.Skip').show()
+        $("tr").filter('.Pending').show()
+};
+</script>
+{% endblock %}

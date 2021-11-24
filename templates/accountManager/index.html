@@ -1,0 +1,121 @@
+{% extends "accountManager/base.html" %}
+{% block body_block %}
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<div class="container-fluid" ;>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="  text text-uppercase" >
+        <h1 class="tracking-in-expand text text-uppercase" style="font-family: 'Catamaran', sans-serif;">Welcome to BRS-NTPL</h1>
+      </div>
+    </div>
+  </div>
+</div>
+{% if user.is_authenticated and request.session.template == 'index' %}
+<div class="row swing-in-top-fwd">
+  <div class="col-lg-3 col-md-12 col-sm-12">
+    <div class="card card-stats" style="height: 100px;">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-12 col-md-12">
+            <div class="numbers">
+
+              <p class="text text-uppercase" style="padding: 20px 0; font-size:20px; text-align: center;">Hello {{ user.username }}
+              </p>
+              <p>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-12 col-sm-12">
+    <div class="card card-stats" style="height: 100px;">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              {% load static %}
+              {% if request.session.usertype == 'developer' %}
+              <img class="logo" src="{% static '/assets/img/DashIcons/icons8-developer-50.png' %}" alt="">
+              {% elif request.session.usertype == 'tester' %}
+              <img class="logo" src="{% static '/assets/img/DashIcons/icons8-hacker-50.png' %}" alt="">
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">User Type</p>
+              {% if 'usertype' in request.session %}
+              <p class="card-title text text-uppercase" style="font-size:20px;;">{{request.session.usertype}}
+                {% else %}
+              <p class="card-title text text-uppercase">Admin
+                {% endif %}
+              </p>
+              <p>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-12 col-sm-12">
+    <div class="card card-stats" style="height: 100px;">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <img class="logo" src="/static/assets/img/DashIcons/icons8-double-tick-50.png" alt="">
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">
+                {% if request.session.usertype == 'tester' %}
+                You Found
+                {% elif request.session.usertype == 'developer'%}
+                You Resolved
+                {% endif %}
+              </p>
+              <p class="card-title" style="font-size: 26px;">{{request.session.userbugcount}} Bugs
+              </p>
+              <p>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% if user.is_superuser %}
+  <div class="col-lg-3 col-md-12 col-sm-12 heartbeat">
+    <div style="margin: auto;">
+      <a class="card btn btn-outline-primary" style="height: 100px;padding: 33px 0; font-size:20px;; margin: 1px;"
+        href="{% url 'consoles:adminConsole' %}">Show Console </a>
+      <div style="font-size: x-small;text-align: center;"> Console as Admin</div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-lg-3 col-md-12 col-sm-12 heartbeat">
+    <div style="margin: auto;">
+      <a class="card btn btn-outline-primary" style="height: 100px;padding: 33px 0; font-size:20px;; margin: 1px;"
+        href="{% url 'consoles:BugSheet' %}">Show Console </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="container-fluid" ;">
+  <div class="row">
+    <div class="col-md-8">
+      <div class=" ">
+        <h2>Please Login or Register. </h2><br>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+  {% for notification in  user.notifications.unread %}
+	  <div>
+	    Message from <b>{{ notification.actor }}</b>
+	    <button class="dropdown-item" type="button">{{ notification.description }}</button>			
+		</div>
+		<div class="dropdown-divider"></div>
+	{% endfor %}
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Message</th>
+    </tr>
+  </thead>
+  
+    {% for user1 in users  %}
+      {% if request.user != user1 %}
+        <tbody>
+          <tr>
+            <th scope="row">{{ user1.id }}</th>
+            <td>{{ user1.username }}</td>
+            <td>
+              <form action="{% url 'consoles:message' %}" id="form_message{{ user1.id }}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+              <input type="text" name="message" >
+              <input type="hidden" name='user_id' value='{{ user1.id }}'>
+              <button type="submit" value="Submit" class="btn btn-primary">Send message</button>
+            </form>
+            </td>
+          </tr> 
+        </tbody>
+      {% endif %}
+    {% endfor %}
+</table>

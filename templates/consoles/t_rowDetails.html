@@ -1,0 +1,99 @@
+{% extends "consoles/t_consolebase.html" %}
+{% load static %}
+{% block body_block %}
+
+
+{% for thesheetRow in sheetRow %}
+<div class="container-fluid" style="font-family: 'Oswald', sans-serif;">
+    <div class="row col-md-12 justify-content-center px-3">
+        <h2>Bug Defect ID {{thesheetRow.Defect_Id}}
+            {% if thesheetRow.Resolution_Status == "Pending" %}
+            <span class="mx-2 mt-2 badge " style="background-color: red;">{{thesheetRow.Resolution_Status}}</span>
+            {% else %}
+            <span class="mx-2 mt-2 badge " style="background-color: green;">{{thesheetRow.Resolution_Status}}</span>
+            {% endif %}
+            <span class="mx-2 mt-2 badge badge-secondary">{{thesheetRow.Status}}{% if not thesheetRow.Resolution_Status == 'Closed' %} ({{thesheetRow.TimesReopened}}){% endif %}</span>
+            {% if thesheetRow.Priority == 'Highest'  %}<span class="mx-2 mt-2 badge"
+                style="background-color:#ff5959;"> Priority : {{thesheetRow.Priority}} </span>
+            {% elif thesheetRow.Priority == 'High'   %}<span class="mx-2 mt-2 badge"
+                style="background-color:#ffbb80;"> Priority : {{thesheetRow.Priority}} </span>
+            {% elif thesheetRow.Priority == 'Medium' %}<span class="mx-2 mt-2 badge"
+                style="background-color:#fffd80;"> Priority : {{thesheetRow.Priority}} </span>
+            {% elif thesheetRow.Priority == 'Low'    %}<span class="mx-2 mt-2 badge"
+                style="background-color:#9cff80;"> Priority : {{thesheetRow.Priority}} </span>
+            {% elif thesheetRow.Priority == 'Lowest' %}<span class="mx-2 mt-2 badge"
+                style="background-color:#80eeff;"> Priority : {{thesheetRow.Priority}} </span>
+            {% endif %}
+        </h2>
+    </div>
+    <div class="row card m-1 p-4" {% if thesheetRow.Priority == 'Highest' %} style="background-color:#ffcccc;"
+        {% elif thesheetRow.Priority == 'High' %} style="background-color:#ffe4cc;"
+        {% elif thesheetRow.Priority == 'Medium' %} style="background-color:#fffecc;"
+        {% elif thesheetRow.Priority == 'Low' %} style="background-color:#d7ffcc;"
+        {% elif thesheetRow.Priority == 'Lowest' %} style="background-color:#ccf8ff;" {% endif %}>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 text text-center pb-4" style="text-align: center;"><h3>DETAILS:</h3></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card ml-auto mr-1">
+                            {% if thesheetRow.Attachment%}
+                            <a href="{{ MEDIA_URL }}{{thesheetRow.Attachment}}"><img style='height:330px' class="card-img-top"
+                                    src="{{ MEDIA_URL }}{{thesheetRow.Attachment}}"></a>
+                            {% else %}
+                            <img class="card-img-top" style="height:330px;background-color: #1d0047;"
+                                src="{% static 'brsLogo.png'%} ">
+                            {% endif %}
+                            <div class="card-body">
+                                {% if thesheetRow.Attachment%}
+                                <h5 class="card-title">ScreenShot Attached</h5>
+                                {% else %}
+                                <h5 class="card-title">ScreenShot Not Available</h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table  table-sm table-striped">
+                            <tr><td><h5>Serial No.        : {{thesheetRow.sr_no}}</h5></td></tr>
+                            <tr><td><h5>Defect Id.        : {{thesheetRow.Defect_Id}}</h5></td></tr>
+                            <tr><td><h5>Status            : {{thesheetRow.Status}}</h5></td></tr>
+                            <tr><td><h5>Priority          : {{thesheetRow.Priority}}</h5></td></tr>
+                            <tr><td><h5>Resolution Status : {{thesheetRow.Resolution_Status}}</h5></td></tr>
+                            <tr><td><h5>Browser           : {{thesheetRow.Browser}}</h5></td></tr>
+                            <tr><td><h5>Project Version   : {{thesheetRow.project_version}}</h5></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table  table-sm table-striped">
+                            <tr><td><h5>Times Reopened    : {{thesheetRow.TimesReopened}}</h5></td></tr>
+                            <tr><td><h5>Date of Finding   : {{thesheetRow.Date_of_finding}}</h5></td></tr>
+                            <tr><td><h5>Date of Resolving : {{thesheetRow.Date_of_resolving}}</h5></td></tr>
+                            <tr><td><h5>Project Name      : {{thesheetRow.Project_name}}</h5></td></tr>
+                            <tr><td><h5>Tester Name       : {{thesheetRow.Tester_name}}</h5></td></tr>
+                            <tr><td><h5>Developer Name    : {{thesheetRow.Developer_name}}</h5></td></tr>
+                            <tr><td><h5>Attended By Devs. : {% if thesheetRow.Status == 'New' %}No{% else %}Yes{% endif %}</h5></td></tr>
+                    </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table  table-sm table-striped">
+                            <tr><td><h5>Url of Page         : {{thesheetRow.Url_of_page}}</h5></td></tr>
+                            <tr><td><h5>Defect Description  : {{thesheetRow.Defect_desc}}</h5></td></tr>
+                            <tr><td><h5>Steps to Reproduce  : {{thesheetRow.Steps_to_Reproduce}}</h5></td></tr>
+                            <tr><td><h5>Developer Comments  : {{thesheetRow.Developer_comments}}</h5></td></tr>
+                            <tr><td><h5>Reopening Reason    : {{thesheetRow.Reopen_Reason}}</h5></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+{% endfor %}
+
+{% endblock %}

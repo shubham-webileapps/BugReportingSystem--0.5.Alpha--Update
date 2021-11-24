@@ -1,0 +1,565 @@
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>
+    BRS-NTPL
+  </title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
+    name="viewport">
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@900&display=swap" rel="stylesheet">
+  <!-- CSS Files -->
+
+  <link href="{% static '/assets/css/paper-dashboard.css'%}" rel="stylesheet">
+
+  <script type="text/javascript" charset="UTF-8"
+    src="https://maps.googleapis.com/maps-api-v3/api/js/40/12/intl/en_gb/common.js"></script>
+  <script type="text/javascript" charset="UTF-8"
+    src="https://maps.googleapis.com/maps-api-v3/api/js/40/12/intl/en_gb/util.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <script type="text/javascript">
+    $(document).ready(function ($) {
+      $(".table-row").click(function () {
+        window.document.location = $(this).data("href");
+      });
+    });
+  </script>
+</head>
+
+<body style="background-color: #f4f3ef;">
+  <!-- for oure bootstrap look{% bootstrap_css %}-->
+
+  <nav class=" sticky-top navbar-expand-sm  clearfix" style="z-index: 1030; background-color: #1d0047;">
+    <div class="row mx-2">
+      <a class="navbar-brand float-left d-block d-sm-none" href="{% url 'index' %}">
+        <img src="{% static 'brsLogo-nav.png'%}" width="110px" height="50" style="background-color: #1d0047;"
+          class="d-inline-block align-top" alt="">
+      </a>
+
+      <!------------------------------------------------------------------------------->
+
+      <!--Display Project Name in navbar-->
+
+      <button class="navbar-toggler " style="position: fixed; right: 0;;" data-toggle="collapse"
+        data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="d-flex flex-row">
+        <!--Buttons-->
+        <!--Tester Buttons-->
+
+      </div>
+      <!------------------------------------------------------------------------------>
+      <div class="ml-auto mr-1"></div>
+
+      <div class="collapse navbar-collapse flex-grow-0 float-right" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right text-uppercase" style="color: white;">
+          <li class="nav-item active nav-link">
+            {{request.session.usertype}} : {{request.session.username}}
+          </li>
+
+          {% if user.is_authenticated %}
+                                <style>.icon {
+    cursor: pointer;
+    margin-right: 50px;
+    line-height: 60px
+}
+
+.icon span {
+    background: #f00;
+    padding: 7px;
+    border-radius: 50%;
+    color: #fff;
+    vertical-align: top;
+    margin-left: -25px
+}
+
+.icon img {
+    display: inline-block;
+    width: 26px;
+    margin-top: 4px
+}
+
+.icon:hover {
+    opacity: .7
+}
+
+.logo {
+    flex: 1;
+    margin-left: 50px;
+    color: #eee;
+    font-size: 20px;
+    font-family: monospace
+}
+
+.notifications {
+    width: 300px;
+    height: 0px;
+    opacity: 0;
+    position: absolute;
+    top: 63px;
+    right: 62px;
+    border-radius: 5px 0px 5px 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.notifications h2 {
+    font-size: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: #999
+}
+
+.notifications h2 span {
+    color: #f00
+}
+
+.notifications-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 6px 9px;
+    margin-bottom: 0px;
+    cursor: pointer
+}
+
+.notifications-item:hover {
+    background-color: #eee
+}
+
+.notifications-item .text h4 {
+    color: #777;
+    font-size: 16px;
+    margin-top: 3px
+}
+
+.notifications-item .text p {
+    color: #aaa;
+    font-size: 12px
+}</style>
+<script>
+$(document).ready(function(){
+
+
+$('#box').hide();
+
+var down = false;
+
+$('#bell').click(function(e){
+
+var color = $(this).text();
+if(down){
+
+$('#box').css('height','0px');
+$('#box').css('opacity','0');
+$('#box').hide();
+down = false;
+}else{
+
+$('#box').css('height','auto');
+$('#box').css('opacity','1');
+$('#box').show();
+down = true;
+
+}
+
+});
+
+});</script>
+    {% if request.session.usertype == 'tester' %}
+    
+            <div class="icon" id="bell"> <i class='nc-icon nc-bell-55 pt-2'></i> </div>
+    <div class="notifications" id="box">
+            {% for pa in request.session.pending1 %}
+      <div class="notifications-item">
+            <div class="text">
+                <h4><a href={% url  'consoles:row_detail' projname=pa.fields.Project_name bugModelPK=pa.pk %}>{{pa.fields.Defect_Id}}</a>{{pa.fields.Defect_desc}}</h4>
+            </div>
+                <br>
+        </div>
+            {% endfor %}
+    </div>
+    
+        
+    {% elif request.session.usertype == 'developer' %}
+            <div class="icon" id="bell"> <i class='fas fa-bell pt-2'></i> </div>
+    <div class="notifications" id="box">
+       {% for pa in request.session.solved1 %}
+       <div class="notifications-item">
+            <div class="text">
+                <h4><a href={% url  'consoles:row_detail' projname=pa.fields.Project_name bugModelPK=pa.pk %}>{{pa.fields.Defect_Id}}</a></h4>
+            </div>
+                <br>
+        </div>
+            {% endfor %}
+    
+    </div>
+    {% endif %}
+          <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          <li><a class="nav-link" href="{% url 'change_password' %}">Change Password</a></li>
+          {% else %}
+          <li><a class="nav-link" href="{% url 'accountManager:register' %}">Register</a></li>
+          <li><a class="nav-link" href="{% url 'accountManager:user_login' %}">Login</a></li>
+          <li><a class="nav-link" href="{% url 'password_reset' %}">Forgot Password</a></li>
+          {% endif %}
+
+
+
+        </ul>
+      </div>
+    </div>
+
+  </nav>
+  <div class="wrapper" style="height: auto;;background-color: #d7c7ff;">
+    <div class="sidebar mt-4 " data-color="white" data-active-color="danger" style="border-right: 0px solid #ddd;">
+      <div class="logo p-0 m-0">
+        <img class="avatar border-gray" style="width: 120%;background-color: #1d0047;" src="{% static 'brsLogo.png'%}"
+          alt="...">
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav" style="font-family: 'Oswald', sans-serif; font-stretch: extra-expanded  ;">
+          <li class=" {% if request.session.template == 'index' %} active {% endif %}">
+            
+            <a href="{% url 'index' %}">
+              <i class="nc-icon nc-bank"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.cdac.in" target="_blank">
+              <i class="nc-icon nc-diamond"></i>
+              <p>Cdac Official Site</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.netcomedu.in" target="_blank">
+              <i class="nc-icon nc-pin-3"></i>
+              <p>CDAC Netcom</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://netparam.in" target="_blank">
+              <i class="nc-icon nc-bell-55"></i>
+              <p>Netparam Official Site</p>
+            </a>
+          </li>
+          <li class=" {% if request.session.template == 't_aboutme' %} active {% endif %}">
+            <a href="{% url 'accountManager:about' %}">
+              <i class="nc-icon nc-bell-55"></i>
+              <p>About This Site</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel bg-pan-right" style="background-image:url('{% static 'gradient.png'%}'); height: 200%">
+
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="">
+              {% block body_block %}
+              {% endblock %}</div>
+          </div>
+        </div>
+        <div class="row">
+          {% if request.session.template == 'index' %}
+          <div class="col-lg-12">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="numbers">
+                      <p class="card-category">Bugs Ratio Visualizer :</p>
+                      <p class="card-title">
+                      <div class="progress" style="height: 1.5cm;">
+                        {% for x in ratiodata %}
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                          style="width: {{x.2}}%; background-color: {{x.1}} ;" aria-valuenow="15" aria-valuemin="0"
+                          aria-valuemax="100"></div>
+                        {% endfor %}
+                      </div>
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer ">
+                <hr>
+                <div class="row">
+                  {% for x in ratiodata  %}
+                  <div class="mx-3  ">
+                    <i class="fas fa-circle" style="color: {{x.1}};"></i> : {{x.0}}
+                  </div>
+                  {% endfor %}
+                </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-desktop-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Total Projects</p>
+                      <p class="card-title">{{request.session.totalprojects}}
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-bug-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Total Bugs</p>
+                      <p class="card-title">{{request.session.bugstotal}}
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-double-tick-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Bugs Resolved</p>
+                      <p class="card-title">{{request.session.bugssolved}}
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-12 col-sm-12">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-delete-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Bugs Remains</p>
+                      <p class="card-title">{{request.session.bugspending}}
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if request.session.usertype == 'admin' %}
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 heartbeat">
+            <div class="card">
+              <div class="card-body ">
+                <div class="row">
+                  <a class=" row col-lg-12 col-md-12 col-sm-12 heartbeat btn btn-outline-primary"
+                    style="font-size:20px;; margin: 1px;" href="{% url 'consoles:all_activity' %}"><h6 style="color:black"> Show All Activity Log </h6></a>
+                </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-developer-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Total Developers</p>
+                      <p class="card-title">{{request.session.totaldevelopers}}</p>
+                    </div>
+                  </div>
+                </div>
+                {% if request.session.usertype == 'admin' %}
+                <div class="row">
+                  <table class="table table-light text text-center">
+                    <tr>
+                      <th>List of all Developers:</th>
+                    </tr>
+                    <tr>
+                      <th>Username:</th>
+                      <th>Bug Solved:</th>
+                      <th>Project Assigned:</th>
+                    </tr>
+                    {% for x in dlist %}
+                    <tr>
+                      <td>{{x.username}}</td>
+                      <td>{{x.bugCount}}</td>
+                      <td>{{x.projectCount}}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card card-stats scale-in-ver-top">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img class="logo" src="{% static '/assets/img/DashIcons/icons8-hacker-50.png' %}" alt="">
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Total Testers</p>
+                      <p class="card-title">{{request.session.totaltesters}}
+                      </p>
+                      <p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {% if request.session.usertype == 'admin' %}
+                <div class="row">
+                  <table class="table table-light text text-center">
+                    <tr>
+                      <th>List of all Testers:</th>
+                    </tr>
+                    <tr>
+                      <th>Username:</th>
+                      <th>Bugs Found:</th>
+                      <th>Project Assigned:</th>
+                    </tr>
+                    {% for x in tlist %}
+                    <tr>
+                      <td>{{x.username}}</td>
+                      <td>{{x.bugCount}}</td>
+                      <td>{{x.projectCount}}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <footer class="footer footer-black  footer-white ">
+        <div class="container-fluid">
+          <div class="row" hidden="True">
+            <nav class="footer-nav">
+              <ul>
+                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>2020, made with <i class="fa fa-heart heart"></i> by Creative Tim
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!--   Core JS Files   -->
+  <script src="{% static '/assets/js/core/jquery.min.js' %}"></script>
+  <script src="{% static '/assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static '/assets/js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static '/assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chart JS -->
+  <script src="{% static '/assets/js/plugins/chartjs.min.js' %}"></script>
+  <!--  Notifications Plugin    -->
+  <script src="{% static '/assets/js/plugins/bootstrap-notify.js' %}"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static '/assets/js/paper-dashboard.min.js'%}" type="text/javascript"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
+      demo.initChartsPages();
+    });
+  </script>
+
+
+</body>
+
+</html>

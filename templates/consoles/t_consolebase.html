@@ -1,0 +1,162 @@
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>BRS-NTPL</title>
+    <link href="{% static '/assets/css/paper-dashboard.css'%}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+            $(".table-row").click(function () {
+                window.document.location = $(this).data("href");
+            });
+        });
+    </script>
+<style>
+        .vvds:hover {
+  background-color: blue !important;
+}
+        .vvds1:hover {
+  background-color: red !important;
+}
+        .vvds2:hover {
+  background-color: orange !important;
+}
+        .vvds3:hover {
+  background-color: seagreen !important;
+}
+        .vvds4:hover {
+  background-color: green !important;
+}
+</style>
+
+
+</head>
+
+<body style="font-family: 'Montserrat', sans-serif;">
+    {% bootstrap_css %}
+    <nav class=" sticky-top navbar-expand-sm  clearfix" style="background-color: #1d0047;">
+        <div class="row mx-2">
+            <a class="navbar-brand float-left" href="{% url 'index' %}">
+                <img src="{% static 'brsLogo-nav.png'%}" width="110px" height="50" class="d-inline-block align-top"
+                    alt="">
+            </a>
+
+            <!------------------------------------------------------------------------------->
+
+            <!--Display Project Name in navbar-->
+            {% if proj_name %}
+            <div class="navbar-text mx-2 mr-5 collapse navbar-collapse flex-grow-0 float-right" id="navbarSupportedContent" style="font-size: 30px;color: azure;">Project: {{proj_name}} Bugslist </div>
+            {% endif %}
+
+            <button class="navbar-toggler" style="position: fixed; right: 0;" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="d-flex flex-row ">
+                <!--Buttons-->
+                <!--Tester Buttons-->
+                {% if request.session.usertype == 'tester'  %}
+
+
+                {% if request.session.template == 't_partialsheet' %}
+                <a class="btn btn-info p-2 m-2" style="width: 140px;" href="{% url 'consoles:NewBug' %}">Add Bug</a>
+                <a class="btn btn-info p-2 m-2" style="width: 140px;" href="{% url 'consoles:sheet_detail' pk=request.session.projectname fv='1' %}">Full View</a>
+                <a class="btn btn-info p-2 m-2" style="width: 140px;" href="{% url 'consoles:exportXLS'%}">Export</a>
+                {% endif %}
+
+
+                {% for thesheetRow in sheetRow %}
+                {% if request.session.template == 't_rowDetails'%}
+                {% if thesheetRow.Status == 'New' or thesheetRow.Status == 'Reopen' %}
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:EditBug' bugpk=thesheetRow.pk un=thesheetRow.Tester_name %}">Edit Bug</a>
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% for thesheetRow in sheetRow %}
+                {% if thesheetRow.Status == 'Solved' %}
+                <form action="{% url 'consoles:dropdowntester' bugpk=thesheetRow.pk un=thesheetRow.Tester_name %}" style='display:flex;'>
+                <select name="Status" id="Status" class='form-control p-2 m-2'>
+                    <option value="Reopen">Reopen</option>
+                    <option value="Skip">Skip</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                <input type=submit class="btn btn-info p-2 m-2" style="width: 140px;">
+                </form>
+                {% comment %} 
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:ReopenBug' bugpk=thesheetRow.pk un=thesheetRow.Tester_name %}">Reopen Bug</a>
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:CloseBug' bugpk=thesheetRow.pk un=thesheetRow.Tester_name %}">Close Bug</a>
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:SkipBug' bugpk=thesheetRow.pk un=thesheetRow.Tester_name %}">Skip Bug</a> {% endcomment %}
+                {% endif %}
+                {% endfor %}
+
+                
+                
+                <!--Developer Buttons-->
+                {% elif request.session.usertype == 'developer' %}
+                
+                {% for thesheetRow in sheetRow %}
+                {% if request.session.template == 't_rowDetails' and thesheetRow.Resolution_Status == 'Pending'  %}
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:SolveBug' bugpk=thesheetRow.pk %}">Set As Solved</a>
+                {% endif %}
+                {% endfor %}
+
+                {% for thesheetRow in sheetRow %}
+                {% if request.session.template == 't_rowDetails' and thesheetRow.Resolution_Status == 'Solved' and thesheetRow.Developer_name == request.session.username%}
+                <a class="btn btn-info p-2 m-2" style="width: 140px;"
+                    href="{% url 'consoles:EditSolution' bugpk=thesheetRow.pk un=thesheetRow.Developer_name %}">Edit Details</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if request.session.template == 't_partialsheet' %}
+                <a class="btn btn-info p-2 m-2" style="width: 140px;" href="{% url 'consoles:sheet_detail' pk=request.session.projectname fv='1' %}">Full View</a>
+                <a class="btn btn-info p-2 m-2" style="width: 140px;" href="{% url 'consoles:exportXLS'%}">Export</a>
+                {% endif %}
+
+                {% endif %}
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="ml-auto mr-1"></div>
+
+            <div class="collapse navbar-collapse flex-grow-0 float-right" id="navbarSupportedContent">
+                <ul class="navbar-nav text-right text-uppercase" style="color: white;">
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item active nav-link">
+                            {{request.session.usertype}} : {{request.session.username}}
+                        </li>
+                    <li><a class="nav-link" href="{% url 'logout' %}" style="color:#44acab">Logout</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{% url 'accountManager:register' %}"style="color:#44acab">Register</a></li>
+                    <li><a class="nav-link" href="{% url 'accountManager:user_login' %}"style="color:#44acab">Login</a></li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+        </div>
+        
+    </nav>
+
+    {% block body_block %}
+    {% endblock %}
+
+</body>
+
+</html>

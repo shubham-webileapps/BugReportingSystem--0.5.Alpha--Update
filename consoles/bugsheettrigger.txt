@@ -1,0 +1,16 @@
+CREATE DEFINER=`root`@`localhost` TRIGGER `consoles_bugsheetmodel_BEFORE_INSERT` BEFORE INSERT ON `consoles_bugsheetmodel` FOR EACH ROW BEGIN
+declare devpk varchar(50);
+declare devname varchar(50);
+declare tespk varchar(50);
+declare tesname varchar(50);
+
+set devpk = NEW.Developer_PK_id;
+set devname = (select username from auth_user where id = devpk);
+set NEW.Developer_name = devname;
+
+set tespk = NEW.Tester_PK_id;
+set tesname = (select username from auth_user where id = tespk);
+set NEW.Tester_name = tesname;
+
+
+END

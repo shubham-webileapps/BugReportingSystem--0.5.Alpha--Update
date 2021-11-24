@@ -1,0 +1,159 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BRS - Full View Mode</title>
+        <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
+</head>
+
+<body style="font-family: 'Oswald', sans-serif;">
+        <div class="container-fluid">
+                <div class="row">
+                        <table class='table table-bordered border-primary table-sm table-responsive rounded m-2 p-2' style="
+                        font-size: 14px;">
+                        <thead>
+                                <tr>
+                                        <th scope="col" class="text-wrap">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary"
+                                                                href="#">Pending/Solved</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Sr.No
+                                                        </a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Project Name
+                                                        </a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Browser
+                                                        </a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Defect
+                                                                Id</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Discription</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Steps
+                                                                to Reproduce
+                                                        </a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Priority</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Status</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Attachment
+                                                        </a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Finding
+                                                                Date</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Tester</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Developer</a>
+                                                </h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Resolving
+                                                                Date</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Developer
+                                                                Comments
+                                                                Date</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Reason
+                                                                for Reopening
+                                                                Date</a></h6>
+                                        </th>
+                                        <th scope="col">
+                                                <h6 class="m-1 d-flex justify-content-center" style="font-size:20px"><a
+                                                                class="badge badge-secondary" href="#">Url
+                                                                of page
+                                                        </a></h6>
+                                        </th>
+                                        </tr>
+                        </thead>
+                        <tbody>
+                                {% for sheetRow in sheetRows %}
+
+                                <tr class="table-row" dat href="#}" {% if sheetRow.Priority == 'Highest' %}
+                                        style="background-color:#ff808f;cursor: pointer;"
+                                        {% elif sheetRow.Priority == 'High' %}
+                                        style="background-color:#ffbb80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Medium' %}
+                                        style="background-color:#fffd80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Low' %}
+                                        style="background-color:#9cff80;cursor: pointer;" %}
+                                        {% elif sheetRow.Priority == 'Lowest' %}
+                                        style="background-color:#80eeff;cursor: pointer;" %} {% endif %}>
+                                        <td {% if sheetRow.Resolution_Status == "Pending" %}
+                                                style="color: white; background-color: red;"{% elif sheetRow.Resolution_Status == "Skip"%}
+                                                style="color: white; background-color: orange;"{% elif sheetRow.Resolution_Status == "Closed"%}
+                                                style="color: white; background-color: seagreen;"  {% else %}
+                                                style="color: white; background-color: green;" {% endif %}>
+                                                {{sheetRow.Resolution_Status}}</td>
+                                        <th>{{sheetRow.sr_no}}</th>
+                                        <td>{{sheetRow.Project_name}}</td>
+                                        <td>{{sheetRow.Browser}}</td>
+                                        <td>{{sheetRow.Defect_Id}}</td>
+                                        <td class="text-wrap">{{sheetRow.Defect_desc}}</td>
+                                        <td>{{sheetRow.Steps_to_Reproduce}}</td>
+                                        <td>{{sheetRow.Priority}}</td>
+                                        <td>{{sheetRow.Status}}, ({{sheetRow.TimesReopened}})</td>
+                                        <td><center>{% if sheetRow.Attachment %}<a href="{{ MEDIA_URL }}{{sheetRow.Attachment}}"><img style="width:40px;"
+                                                                src="{{ MEDIA_URL }}{{sheetRow.Attachment}}" alt='no image'></a>{% else %}-{% endif %}</center></td>
+                                        <td>{{sheetRow.Date_of_finding}}</td>
+                                        <td>{{sheetRow.Tester_name}}</td>
+                                        <td>{{sheetRow.Reopen_Reason}}</td>
+                                        <td>{{sheetRow.Developer_name}}</td>
+                                        <td>{{sheetRow.Date_of_resolving}}</td>
+                                        <td>{{sheetRow.Developer_comments}}</td>
+                                        <td>{{sheetRow.Url_of_page}}</td>
+                                </tr>
+
+                                {% endfor %}
+                        </tbody>
+                        </table>
+                </div>
+        </div>
+</body>
+
+</html>

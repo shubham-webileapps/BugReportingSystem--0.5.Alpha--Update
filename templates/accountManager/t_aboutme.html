@@ -1,0 +1,27 @@
+{% extends 'accountManager/base.html' %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+{{ theform.media }}
+
+<div class="container">
+    <br><br><br>
+    <h1>About This Site :</h1><br>
+    <h2>Hello there ! <br>
+     <h3>      This site is developed by Garvit Gothwal with passion for the CDAC ATC Jaipur and Netparam to be used internally. <br>
+        Hope you like it ! <br><br>
+
+        Mentor: Bhanu Chouhan Sir <br>
+        Thank you so much for your amazing guidance Sir ! <br>
+        Developed using Django 3.0.5 <br><br>
+        Project By: Garvit Gothwal (Python Django) 
+    </h3>
+    </h2><br><br>
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "consoles/t_consolebase.html" %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{{ theform.media }}
+{% comment %} {{ theform1.media }} {% endcomment %}
+
+<div class="container card my-4 alert alert-secondary">
+    <h2 class='text'>Enter New Bug Details:</h2>
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <!--{{theform|crispy}}-->
+        {% comment %} {% crispy_forms_tags.as_p theform %} {% endcomment %}
+        {% bootstrap_form theform %}
+        {{theform.Attachment}}
+        {% comment %} <input name='Attachment' type='file' class='form-control'> {% endcomment %}
+        <div class="mx-auto" style="width: 200px;">
+            <input class="btn btn-outline-primary sendButton" type="submit" value="Save Bug">
+        </div>
+    </form>
+    <footer>.</footer>
+</div>
+<script>
+    $('.sendButton').attr('disabled',false);
+    $('form').keyup(function(){
+        document.getElementById("Defect_desc").pattern = "[a-zA-Z ]";
+        document.getElementById("Steps_to_Reproduce").pattern = "[a-zA-Z ]";
+        if ( $.trim( $('#Browser').val() ) == '' )
+            $('.sendButton').attr('disabled',true);
+        else if ( $.trim( $('#Defect_desc').val() ) == '' )
+            $('.sendButton').attr('disabled',true);
+        else if ( $.trim( $('#Steps_to_Reproduce').val() ) == '' )
+            $('.sendButton').attr('disabled',true);
+        else
+            $('.sendButton').attr('disabled',false);
+    })
+
+</script>
+{% endblock %}

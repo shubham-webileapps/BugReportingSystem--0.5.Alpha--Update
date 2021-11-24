@@ -1,0 +1,38 @@
+{% extends "accountManager/base.html" %}
+{% block body_block %}
+<div class="container card">
+    
+        
+        {% if user.is_authenticated %}
+                <h1>Hello {{ user.username }}</h1>
+
+
+                {% if request.session.usertype == 'tester'%}
+                        <h3> Projects Assigned As Tester : </h3>
+                        {% else %}
+                        <h3> Projects Assigned As Developer : </h3>
+                {% endif %}
+
+                
+                {% if request.session.userprojectcount != 0 %}
+                        {% for project in projects %}
+                        <div>
+                        <a class="btn btn-lg btn-outline-primary btn-block p-0" style="width:200px; font-size:25px;"
+                                href="{% url 'consoles:sheet_detail' pk=project.0 fv='0' %}">
+                                {{ project.0}} </a> :  Total Bugs:{{ project.3}} | Solved:{{ project.1}} | Remains: {{ project.2}} 
+                        </div>
+                        <br />
+                        {% endfor %}
+                {% else %}
+                        <br><div style="text-align: center;"><H4>No projects are assigned to you. Contact admin.</H4></div><br>
+                {% endif %}
+                        
+                
+
+
+                {% else %}
+                <h2>Register or Login if you'd like to</h2>
+        {% endif %}
+    
+</div>
+{% endblock %}
